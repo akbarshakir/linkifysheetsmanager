@@ -475,12 +475,21 @@ async function initialiseApp() {
     $("search").addEventListener("input", renderSheets);
     $("filterType").addEventListener("change", renderSheets);
 
-    document.querySelectorAll("[data-filter]").forEach((link) => {
-      link.addEventListener("click", () => {
-        $("filterType").value = link.dataset.filter;
-        renderSheets();
-      });
+   document.querySelectorAll("[data-filter]").forEach((link) => {
+  link.addEventListener("click", (event) => {
+    if (link.classList.contains("stat-card")) {
+      event.preventDefault();
+    }
+
+    $("filterType").value = link.dataset.filter;
+    renderSheets();
+
+    $("sheetsSection").scrollIntoView({
+      behavior: "smooth",
+      block: "start"
     });
+  });
+});
 
     const { data, error } = await db.auth.getSession();
     if (error) throw error;
